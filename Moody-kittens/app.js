@@ -7,6 +7,18 @@ let kittens = []
  * Then reset the form
  */
 function addKitten(event) {
+  event.preventDefault()
+  let form = event.target
+
+  const kitten={
+    id: generateId(),
+    name: form.name.value,
+    mood: "",
+    affection: 0
+  }
+  kittens.push(kitten)
+  saveKittens()
+  form.reset()
 }
 
 /**
@@ -14,6 +26,8 @@ function addKitten(event) {
  * Saves the string to localstorage at the key kittens 
  */
 function saveKittens() {
+  window.localStorage.setItem("kittens", JSON.stringify(kittens))
+  drawKittens()
 }
 
 /**
@@ -22,12 +36,28 @@ function saveKittens() {
  * the kittens array to the retrieved array
  */
 function loadKittens() {
+  let kittenList = JSON.parse(window.localStorage.getItem("kittens"))
+  if(kittenList){
+    kittens = kittenList
+  }
 }
 
 /**
  * Draw all of the kittens to the kittens element
  */
 function drawKittens() {
+  let kittenListElem = document.getElementById("kittens")
+  let kittensTemplate = ""
+  kittens.forEach(kitten => {
+    kittensTemplate += `
+    <div class="kitten-card">
+      <h3>${kitten.name}</h3>
+      <button type="button" onclick="pet('${pet}')">Pet!</button>
+      <button type="button" onclick="removekitten('${kitten.id}')">remove</button>
+      </div>
+      `
+  })
+  kittenListElem.innerHTML = kittensTemplate
 }
 
 
@@ -37,6 +67,9 @@ function drawKittens() {
  * @return {Kitten}
  */
 function findKittenById(id) {
+  let kittens = object.kittens(localStorage);
+  
+
 }
 
 
@@ -49,6 +82,9 @@ function findKittenById(id) {
  * @param {string} id 
  */
 function pet(id) {
+  findKittenById(i)
+  
+
 }
 
 /**
@@ -72,6 +108,8 @@ function setKittenMood(kitten) {
  * remember to save this change
  */
 function clearKittens(){
+localStorage.clear()
+console.log('no more kitties')
 }
 
 /**
@@ -81,6 +119,7 @@ function clearKittens(){
 function getStarted() {
   document.getElementById("welcome").remove();
   console.log('Good Luck, Take it away')
+  drawKittens()
 }
 
 
